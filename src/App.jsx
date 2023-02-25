@@ -18,7 +18,6 @@ const App = () => {
   // inicializar o contrato editionDrop
   const editionDropAddress = "0x3dbEADA0E5fc927b4eAb40AeB7F7E596bCD3A7E5"
   const { contract: token } = useContract('0x382bCB43B82B319EB4c78cb8f53B030CFd3832E3', 'token');
-  const { contract: editionDrop } = useContract(editionDropAddress, "edition-drop");
   // Hook para sabermos se o usuário tem nosso NFT.
   const { data: nftBalance } = useNFTBalance(editionDrop, address, "0")
   const { contract: vote } = useContract("0xE0ccc337A1dD12eF9d0310040c76e56B881e8b47", "vote");
@@ -105,8 +104,10 @@ useEffect(() => {
     }
 
   };
-  getAllAddresses();
-}, [hasClaimedNFT, editionDrop.history]);
+  if(!editionDrop != null){
+    getAllAddresses();
+  }
+}, [hasClaimedNFT]);
 
 // Esse useEffect pega o # de tokens que cada membro tem.
 useEffect(() => {
@@ -124,8 +125,10 @@ useEffect(() => {
       console.error("falha ao buscar o saldo dos membros", error);
     }
   };
-  getAllBalances();
-}, [hasClaimedNFT, token.history]);
+  if(!token){
+    getAllBalances();
+  }
+}, [hasClaimedNFT]);
 
 
 // Agora, nós combinamos os memberAddresses e os memberTokenAmounts em um único array
@@ -320,16 +323,16 @@ const memberList = useMemo(() => {
   };
 
   if (address && (network?.[0].data.chain.id !== ChainId.Goerli)) {
-    return (
-      <div className="unsupported-network">
-        <h2>Por favor, conecte-se à rede Goerli</h2>
-        <p>
-          Essa dapp só funciona com a rede Goerli, por favor 
-          troque de rede na sua carteira.
-        </p>
-      </div>
-    );
-  }
+  return (
+    <div className="unsupported-network">
+      <h2>Por favor, conecte-se à rede Goerli</h2>
+      <p>
+        Essa dapp só funciona com a rede Goerli, por favor 
+        troque de rede na sua carteira.
+      </p>
+    </div>
+  );
+}
   // Renderiza a tela de cunhagem do NFT.
   return (
     <div className="mint-nft">
