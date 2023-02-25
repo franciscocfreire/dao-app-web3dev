@@ -17,6 +17,7 @@ const App = () => {
   const network = useNetwork();
   // inicializar o contrato editionDrop
   const editionDropAddress = "0x3dbEADA0E5fc927b4eAb40AeB7F7E596bCD3A7E5"
+  const { contract: editionDrop } = useContract(editionDropAddress, "edition-drop");
   const { contract: token } = useContract('0x382bCB43B82B319EB4c78cb8f53B030CFd3832E3', 'token');
   // Hook para sabermos se o usuário tem nosso NFT.
   const { data: nftBalance } = useNFTBalance(editionDrop, address, "0")
@@ -149,7 +150,7 @@ const memberList = useMemo(() => {
     if (!address) {
     return (
       <div className="landing">
-        <h1>Welcome to CervejeiroDAO</h1>
+        <h1>🍺Bem vindo ao CervejeiroDAO</h1>
         <div className="btn-hero">
           <ConnectWallet />
         </div>
